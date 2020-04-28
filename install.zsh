@@ -62,48 +62,43 @@ pacstrap /mnt base linux linux-firmware sudo
 cp /mnt/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
 arch-chroot /mnt pacman -Syy
 
-comment=''
+# used packages
+
+programming="neovim python-neovim ccls ctags python-language-server docker docker-compose gnupg openssh cmake jdk8-openjdk jdk-openjdk rust python git"
+
+network_tools="bind-tools nmap gnu-netcat wget curl networkmanager"
+
+personal_organization="alot khal khard msmtp pass"
+
+sound="alsa-utils bluez bluez-utils pavucontrol playerctl pulseaudio pulseaudio-bluetooth"
+
+phone="android-tools android-udev"
+
+backup="borg unison"
+
+memes="cmatrix cowsay lolcat neofetch figlet"
+
+window_manager="sway swaybg swayidle swaylock waybar ttf-inconsolata light grim slurp wofi mako pinentry alacritty xorg-server-xwayland"
+
+utils="expac hdparm htop iotop gist jq man-pages man-db powertop rsync smartmontools unrar minizip zsh"
+
+large_programs="gimp libreoffice-fresh-pl calibre qutebrowser virtualbox virtualbox-host-modules-arch"
+
+media="mediainfo mpv nfs-utils youtube-dl"
+
 cat << EOF | xargs arch-chroot /mnt pacman -S --noconfirm --needed
-$($comment('programming'))
 $(pacman -Sgq base-devel)
-neovim python-neovim ccls ctags python-language-server
-docker docker-compose gnupg openssh cmake
-jdk8-openjdk jdk-openjdk rust python git
-
-$($comment('network tools'))
-bind-tools nmap gnu-netcat wget curl networkmanager
-
-$($comment('personal organization (missing getmail)'))
-alot khal khard msmtp pass
-
-$($comment('sound'))
-alsa-utils bluez bluez-utils pavucontrol playerctl pulseaudio pulseaudio-bluetooth
-
-$($comment('phone'))
-android-tools android-udev
-
-$($comment('backup'))
-borg unison
-
-$($comment('memes'))
-cmatrix cowsay lolcat neofetch figlet
-
-$($comment('window manager'))
-sway swaybg swayidle swaylock waybar ttf-inconsolata
-light grim slurp wofi mako pinentry alacritty xorg-server-wayland
-
-$($comment('utils'))
-expac hdparm htop iotop gist jq
-man-pages man-db powertop
-rsync smartmontools
-unrar minizip zsh
-
-$($comment('large programs'))
-gimp libreoffice-fresh-pl calibre qutebrowser
-virtualbox virtualbox-host-modules-arch
-
-$($comment('media'))
-mediainfo mpv nfs-utils youtube-dl
+$programming
+$network_tools
+$personal_organization
+$sound
+$phone
+$backup
+$memes
+$window_manager
+$utils
+$large_programs
+$media
 EOF
 
 
