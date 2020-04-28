@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-# TODO delete after debug
-echo "Server = http://10.0.2.2:8080/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
-
 echo "Hello! Running marek's archlinux install script..."
 timedatectl set-ntp true
 
@@ -29,8 +26,6 @@ cat << EOF | sfdisk --label gpt -w always $disk
 , , L, -
 quit
 EOF
-sfdisk --part-label $disk 1 boot
-sfdisk --part-label $disk 2 root
 
 boot_part="$disk"1
 root_part="$disk"2
@@ -42,9 +37,9 @@ echo "\n[2] Formatting partitions...\n"
 vared -p "Please input password used for root encryption: " -c root_password
 
 
-mkfs.fat -F32 $boot_part
+mkfs.fat -n boot -F32 $boot_part
 
-echo $root_password | cryptsetup -q luksFormat $root_part
+echo $root_password | cryptsetup -q luksFormat --type luks2 --label=encroot $root_part
 echo $root_password | cryptsetup open /dev/sda2 cryptroot
 mkfs.ext4 /dev/mapper/cryptroot
 
@@ -70,7 +65,7 @@ docker docker-compose gnupg openssh cmake
 jdk8-openjdk jdk-openjdk rust python git
 
 $($comment('network tools'))
-bind-tools nmap gnu-netcat wget curl
+bind-tools nmap gnu-netcat wget curl networkmanager
 
 $($comment('personal organization (missing getmail)'))
 alot khal khard msmtp pass
@@ -89,7 +84,7 @@ cmatrix cowsay lolcat neofetch figlet
 
 $($comment('window manager'))
 sway swaybg swayidle swaylock waybar ttf-inconsolata
-light grim slurp wofi mako pinentry alacritty
+light grim slurp wofi mako pinentry alacritty xorg-server-wayland
 
 $($comment('utils'))
 expac hdparm htop iotop gist jq
@@ -121,6 +116,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 # timezone
 arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
 arch-chroot /mnt hwclock --systohc
+arch-chroot /mnt timedatectl set-ntp true
 
 # locale
 echo "en_US.UTF-8 UTF-8" > /mnt/etc/locale.gen
@@ -172,12 +168,11 @@ echo "\n[7] Bootloader setup...\n"
 bootctl --path=/mnt/boot install
 echo "default arch" > /mnt/boot/loader/loader.conf
 
-mkdir -p /mnt/boot/loader/entries
 cat << EOF > /mnt/boot/loader/entries/arch.conf
 title   Arch Linux
-linux   /vmlinuz-linux-zen
+linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
-options cryptdevice=LABEL=root:cryptroot:allow-discards root=/dev/mapper/cryptroot quiet
+options cryptdevice=LABEL=encroot:cryptroot:allow-discards root=/dev/mapper/cryptroot quiet
 EOF
 
 
