@@ -52,8 +52,14 @@ mount $boot_part /mnt/boot
 echo "\n[3] Installing packages...\n"
 
 pacman -Syy
+pacman -S --noconfirm reflector
+
+echo "Setting mirrorlist using reflector"
+reflector --latest 40 --sort rate --save /etc/pacman.d/mirrorlist
+
 pacstrap /mnt base linux linux-firmware sudo
 
+cp /mnt/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
 arch-chroot /mnt pacman -Syy
 
 comment=''
@@ -103,12 +109,6 @@ EOF
 
 
 echo "\n[5] Configuring system...\n"
-
-# mirrorlist
-pacman -S --noconfirm reflector
-
-echo "Setting mirrorlist using reflector"
-reflector --latest 40 --sort rate --save /mnt/etc/pacman.d/mirrorlist
 
 # fstab
 genfstab -U /mnt >> /mnt/etc/fstab
