@@ -80,7 +80,7 @@ memes="cmatrix cowsay lolcat neofetch figlet"
 
 window_manager="sway swaybg swayidle swaylock waybar ttf-inconsolata light grim slurp wofi mako pinentry alacritty xorg-server-xwayland xdg-user-dirs wl-clipboard"
 
-utils="expac hdparm htop iotop gist jq man-pages man-db powertop rsync smartmontools unrar minizip zsh"
+utils="expac hdparm htop iotop gist jq man-pages man-db powertop rsync smartmontools unrar minizip zsh zathura zathura-pdf-mupdf feh"
 
 large_programs="gimp libreoffice-fresh-pl calibre qutebrowser virtualbox virtualbox-host-modules-arch"
 
