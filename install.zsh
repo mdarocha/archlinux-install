@@ -63,42 +63,27 @@ cp /mnt/etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist
 arch-chroot /mnt pacman -Syy
 
 # used packages
-
-programming="neovim python-neovim ccls ctags python-language-server docker docker-compose gnupg openssh cmake jdk8-openjdk jdk-openjdk rust python git"
-
-network_tools="bind-tools nmap gnu-netcat wget curl networkmanager"
-
-personal_organization="alot khal khard msmtp pass"
-
-sound="alsa-utils bluez bluez-utils pavucontrol playerctl pulseaudio pulseaudio-bluetooth"
-
-phone="android-tools android-udev"
-
-backup="borg unison"
-
-memes="cmatrix cowsay lolcat neofetch figlet"
-
-window_manager="sway swaybg swayidle swaylock waybar ttf-inconsolata light grim slurp wofi mako pinentry alacritty xorg-server-xwayland xdg-user-dirs wl-clipboard"
-
-utils="expac hdparm htop iotop gist jq man-pages man-db powertop rsync smartmontools unrar minizip zsh zathura zathura-pdf-mupdf feh"
-
-large_programs="gimp libreoffice-fresh-pl calibre qutebrowser virtualbox virtualbox-host-modules-arch"
-
-media="mediainfo mpv nfs-utils youtube-dl"
-
 cat << EOF | xargs arch-chroot /mnt pacman -S --noconfirm --needed
 $(pacman -Sgq base-devel)
-$programming
-$network_tools
-$personal_organization
-$sound
-$phone
-$backup
-$memes
-$window_manager
-$utils
-$large_programs
-$media
+sway
+swaybg
+swayidle
+swaylock
+ttf-inconsolata
+bemenu
+alacritty
+xorg-server-xwayland
+xdg-user-dirs
+wl-clipboard
+qt5-wayland
+
+networkmanager
+
+bluez
+pulseaudio
+pulseaudio-bluetooth
+
+zsh
 EOF
 
 
@@ -140,7 +125,7 @@ vared -p "Please enter password for root: " -c root_passwd
 vared -p "Please enter your username: " -c user_name
 vared -p "Please enter password for $user_name: " -c user_passwd
 
-arch-chroot /mnt useradd -G video,wheel,vboxusers,docker -s /bin/zsh -m $user_name
+arch-chroot /mnt useradd -G video,wheel,vboxusers,docker,lp,audio -s /bin/zsh -m $user_name
 
 echo "root:$root_passwd" | arch-chroot /mnt chpasswd
 echo "$user_name:$user_passwd" | arch-chroot /mnt chpasswd
