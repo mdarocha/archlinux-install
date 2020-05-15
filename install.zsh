@@ -125,7 +125,7 @@ vared -p "Please enter password for root: " -c root_passwd
 vared -p "Please enter your username: " -c user_name
 vared -p "Please enter password for $user_name: " -c user_passwd
 
-arch-chroot /mnt useradd -G video,wheel,vboxusers,docker,lp,audio -s /bin/zsh -m $user_name
+arch-chroot /mnt useradd -G video,wheel,lp,audio -s /bin/zsh -m $user_name
 
 echo "root:$root_passwd" | arch-chroot /mnt chpasswd
 echo "$user_name:$user_passwd" | arch-chroot /mnt chpasswd
