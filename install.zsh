@@ -65,6 +65,7 @@ arch-chroot /mnt pacman -Syy
 # used packages
 cat << EOF | xargs arch-chroot /mnt pacman -S --noconfirm --needed
 $(pacman -Sgq base-devel)
+git
 sway
 swaybg
 swayidle
