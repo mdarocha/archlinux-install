@@ -118,6 +118,8 @@ EOF
 sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev keyboard autodetect keymap consolefont modconf block encrypt filesystems fsck)/g' /mnt/etc/mkinitcpio.conf
 arch-chroot /mnt mkinitcpio -P
 
+# enable services
+arch-chroot /mnt systemctl enable NetworkManager
 
 
 echo "\n[6] User configuration...\n"
