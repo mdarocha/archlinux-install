@@ -81,8 +81,6 @@ qt5-wayland
 networkmanager
 
 bluez
-pulseaudio
-pulseaudio-bluetooth
 
 zsh
 EOF
